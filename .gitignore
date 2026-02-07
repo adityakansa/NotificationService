@@ -1,4 +1,33 @@
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Java ###
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
 ### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
@@ -25,6 +54,55 @@ bin/
 
 ### VS Code ###
 .vscode/
+*.code-workspace
 
 ### Mac OS ###
 .DS_Store
+.AppleDouble
+.LSOverride
+
+### Windows ###
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+### Linux ###
+*~
+.directory
+.Trash-*
+
+### Application Logs ###
+logs/
+*.log
+*.log.*
+
+### H2 Database ###
+*.db
+*.mv.db
+*.trace.db
+
+### Application Properties (Sensitive) ###
+application-prod.yml
+application-local.yml
+application-secrets.yml
+*.env
+
+### Backup Files ###
+*.bak
+*.swp
+*~.nib
+*.orig
+
+### Test Coverage Reports ###
+.jacoco/
+jacoco.exec
+coverage/
+
+### Temporary Files ###
+tmp/
+temp/
+*.tmp
+*.temp

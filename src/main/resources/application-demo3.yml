@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: demo3
+
+logging:
+  level:
+    root: ERROR
+    com.notification: INFO
+    com.notification.channel: INFO
+    com.notification.service: INFO
+    com.notification.demo: INFO
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    org.hibernate.SQL: ERROR
+    org.hibernate.type: ERROR
+    com.zaxxer.hikari: ERROR
