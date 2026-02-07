@@ -1,0 +1,1029 @@
+{
+	"info": {
+		"_postman_id": "notification-system-api-v2",
+		"name": "Notification System API - Complete Collection",
+		"description": "Comprehensive API collection for Notification System with 272+ tests coverage. Includes all channels (EMAIL, SMS, PUSH, WHATSAPP, SLACK), scheduling, validation, and monitoring.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"version": "2.0.0"
+	},
+	"item": [
+		{
+			"name": "1. User Management",
+			"item": [
+				{
+					"name": "Register User - Alice (All Channels)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"alice_premium\",\n  \"email\": \"alice@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"pushToken\": \"fcm-alice-token-123\",\n  \"whatsappNumber\": \"+1234567890\",\n  \"slackHandle\": \"@alice\",\n  \"preferredChannels\": [\"EMAIL\", \"SMS\", \"PUSH\", \"WHATSAPP\", \"SLACK\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User - Bob (Email & Push)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"bob_standard\",\n  \"email\": \"bob@example.com\",\n  \"phoneNumber\": \"+1987654321\",\n  \"pushToken\": \"fcm-bob-token-456\",\n  \"preferredChannels\": [\"EMAIL\", \"PUSH\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User - Charlie (Email Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"charlie_email\",\n  \"email\": \"charlie@example.com\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Channel Preferences",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"EMAIL\", \"SMS\", \"PUSH\"]"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/1/preferences",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "1", "preferences"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Channel Contact Info",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": \"+1999888777\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/1/channels/SMS",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "1", "channels", "SMS"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable Channel",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/1/channels/WHATSAPP",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "1", "channels", "WHATSAPP"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disable Channel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/1/channels/SMS",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "1", "channels", "SMS"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/3",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "users", "3"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Multi-Channel Notifications",
+			"item": [
+				{
+					"name": "Create EMAIL Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Welcome Email\",\n  \"body\": \"Welcome to our notification system! We're excited to have you on board.\",\n  \"channel\": \"EMAIL\",\n  \"priority\": \"MEDIUM\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SMS Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"SMS Alert\",\n  \"body\": \"Your order #12345 has been shipped! Track: example.com/track/12345\",\n  \"channel\": \"SMS\",\n  \"priority\": \"HIGH\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create PUSH Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"New Message\",\n  \"body\": \"You have a new message from John Doe. Tap to read.\",\n  \"channel\": \"PUSH\",\n  \"priority\": \"MEDIUM\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create WHATSAPP Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"WhatsApp Alert\",\n  \"body\": \"Your appointment is confirmed for tomorrow at 3 PM.\",\n  \"channel\": \"WHATSAPP\",\n  \"priority\": \"HIGH\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SLACK Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Build Status\",\n  \"body\": \"✅ Build #123 completed successfully in 5m 32s\",\n  \"channel\": \"SLACK\",\n  \"priority\": \"LOW\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Notification Immediately",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/1/send",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "1", "send"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/1/history",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "1", "history"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Priority Levels",
+			"item": [
+				{
+					"name": "Create LOW Priority Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Weekly Newsletter\",\n  \"body\": \"Check out this week's top articles and updates from our blog.\",\n  \"channel\": \"EMAIL\",\n  \"priority\": \"LOW\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create MEDIUM Priority Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Account Update\",\n  \"body\": \"Your account settings have been updated. If this wasn't you, please contact support immediately.\",\n  \"channel\": \"EMAIL\",\n  \"priority\": \"MEDIUM\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create HIGH Priority Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Security Alert\",\n  \"body\": \"Unusual login detected from new location: San Francisco, CA. If this wasn't you, secure your account immediately.\",\n  \"channel\": \"SMS\",\n  \"priority\": \"HIGH\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Scheduled Notifications",
+			"item": [
+				{
+					"name": "Create Scheduled Notification (5 min future)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Meeting Reminder\",\n  \"body\": \"Your team meeting 'Q1 Planning' starts in 15 minutes in Conference Room B.\",\n  \"channel\": \"PUSH\",\n  \"priority\": \"MEDIUM\",\n  \"scheduleType\": \"SCHEDULED\",\n  \"scheduledTime\": \"2026-02-10T14:00:00\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reschedule Notification",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"scheduledTime\": \"2026-02-10T15:30:00\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/7/schedule",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "7", "schedule"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Scheduled Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/7/schedule",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "7", "schedule"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Recurring Notifications",
+			"item": [
+				{
+					"name": "Create DAILY Recurring Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Daily Standup Reminder\",\n  \"body\": \"Time for your daily standup! Share what you did yesterday, what you're doing today, and any blockers.\",\n  \"channel\": \"SLACK\",\n  \"priority\": \"MEDIUM\",\n  \"scheduleType\": \"RECURRING\",\n  \"scheduledTime\": \"2026-02-10T09:00:00\",\n  \"recurrenceFrequency\": \"DAILY\",\n  \"maxOccurrences\": 30\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create WEEKLY Recurring Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Weekly Team Report\",\n  \"body\": \"Your team's weekly progress report is ready. Check dashboard for details.\",\n  \"channel\": \"EMAIL\",\n  \"priority\": \"LOW\",\n  \"scheduleType\": \"RECURRING\",\n  \"scheduledTime\": \"2026-02-10T08:00:00\",\n  \"recurrenceFrequency\": \"WEEKLY\",\n  \"recurrenceEndTime\": \"2026-05-10T08:00:00\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create MONTHLY Recurring Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"subject\": \"Monthly Subscription Renewal\",\n  \"body\": \"Your premium subscription ($9.99) will renew in 3 days. Manage subscription in account settings.\",\n  \"channel\": \"EMAIL\",\n  \"priority\": \"MEDIUM\",\n  \"scheduleType\": \"RECURRING\",\n  \"scheduledTime\": \"2026-03-05T10:00:00\",\n  \"recurrenceFrequency\": \"MONTHLY\",\n  \"maxOccurrences\": 12\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Bulk Notifications",
+			"item": [
+				{
+					"name": "Register Campaign Users (Bulk)",
+					"item": [
+						{
+							"name": "Register Campaign User 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_1\",\n  \"email\": \"campaign1@example.com\",\n  \"phoneNumber\": \"+1000000001\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_2\",\n  \"email\": \"campaign2@example.com\",\n  \"phoneNumber\": \"+1000000002\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 3",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_3\",\n  \"email\": \"campaign3@example.com\",\n  \"phoneNumber\": \"+1000000003\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 4",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_4\",\n  \"email\": \"campaign4@example.com\",\n  \"phoneNumber\": \"+1000000004\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 5",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_5\",\n  \"email\": \"campaign5@example.com\",\n  \"phoneNumber\": \"+1000000005\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 6",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_6\",\n  \"email\": \"campaign6@example.com\",\n  \"phoneNumber\": \"+1000000006\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 7",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_7\",\n  \"email\": \"campaign7@example.com\",\n  \"phoneNumber\": \"+1000000007\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 8",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_8\",\n  \"email\": \"campaign8@example.com\",\n  \"phoneNumber\": \"+1000000008\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 9",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_9\",\n  \"email\": \"campaign9@example.com\",\n  \"phoneNumber\": \"+1000000009\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Campaign User 10",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"campaign_user_10\",\n  \"email\": \"campaign10@example.com\",\n  \"phoneNumber\": \"+1000000010\",\n  \"preferredChannels\": [\"EMAIL\"]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users",
+									"protocol": "http",
+									"host": ["localhost"],
+									"port": "8080",
+									"path": ["api", "users"]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Send Bulk Campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userIds\": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],\n  \"template\": {\n    \"subject\": \"🎉 Special Offer - 50% OFF!\",\n    \"body\": \"Limited time offer! Get 50% off on all products this week. Use code SAVE50 at checkout. Valid until Feb 15.\",\n    \"channel\": \"EMAIL\",\n    \"priority\": \"MEDIUM\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/bulk",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "bulk"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. Monitoring & Statistics",
+			"item": [
+				{
+					"name": "Get All Notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications?page=0&size=50",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/statistics/batch",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "statistics", "batch"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Retry Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/statistics/retry",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "statistics", "retry"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notifications by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/user/1?page=0&size=20",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "user", "1"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notifications by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/status/SENT?page=0&size=20",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "status", "SENT"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "8. Retry & Failure Handling",
+			"item": [
+				{
+					"name": "Retry Failed Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/1/retry",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "1", "retry"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Retry Configuration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/notifications/statistics/retry",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "notifications", "statistics", "retry"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
