@@ -34,7 +34,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
         @Param("priority") NotificationPriority priority
     );
     
-    @Query("SELECT n FROM Notification n WHERE n.scheduleType = :scheduleType " +
+    @Query("SELECT n FROM Notification n JOIN FETCH n.user WHERE n.scheduleType = :scheduleType " +
            "AND n.scheduledTime <= :now AND n.status = :status")
     List<Notification> findScheduledNotificationsDue(
         @Param("scheduleType") ScheduleType scheduleType,
@@ -49,8 +49,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
         @Param("now") LocalDateTime now
     );
     
-    @Query("SELECT n FROM Notification n WHERE n.scheduleType = 'RECURRING' " +
+    @Query("SELECT n FROM Notification n JOIN FETCH n.user WHERE n.scheduleType = 'RECURRING' " +
            "AND n.status = 'SENT' " +
+           "AND n.scheduledTime <= CURRENT_TIMESTAMP " +
            "AND (n.maxOccurrences IS NULL OR n.occurrenceCount < n.maxOccurrences) " +
            "AND (n.recurrenceEndTime IS NULL OR n.recurrenceEndTime > CURRENT_TIMESTAMP)")
     List<Notification> findRecurringNotificationsForNextExecution();

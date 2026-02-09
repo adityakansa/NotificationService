@@ -3,12 +3,14 @@ package com.notification.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +72,32 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        log.error("HttpMessageNotReadableException: {}", ex.getMessage());
+        
+        String message = "Invalid request format";
+        
+        // Check if it's a DateTimeParseException
+        Throwable cause = ex.getCause();
+        while (cause != null) {
+            if (cause instanceof DateTimeParseException) {
+                message = "Invalid date/time format. Please use ISO 8601 format: YYYY-MM-DDTHH:mm:ss (e.g., 2026-02-09T18:30:00)";
+                break;
+            }
+            cause = cause.getCause();
+        }
+        
+        ErrorResponse error = ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error("Bad Request")
+            .message(message)
+            .build();
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+    
     @ExceptionHandler(java.time.format.DateTimeParseException.class)
     public ResponseEntity<ErrorResponse> handleDateTimeParseException(java.time.format.DateTimeParseException ex) {
         log.error("DateTimeParseException: {}", ex.getMessage());
@@ -78,7 +106,7 @@ public class GlobalExceptionHandler {
             .timestamp(LocalDateTime.now())
             .status(HttpStatus.BAD_REQUEST.value())
             .error("Bad Request")
-            .message("Invalid date/time format. Please use ISO 8601 format: YYYY-MM-DDTHH:mm:ss")
+            .message("Invalid date/time format. Please use ISO 8601 format: YYYY-MM-DDTHH:mm:ss (e.g., 2026-02-09T18:30:00)")
             .build();
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

@@ -233,7 +233,9 @@ public class NotificationService {
         if (request.getScheduleType() == com.notification.domain.enums.ScheduleType.SCHEDULED) {
             initialStatus = NotificationStatus.SCHEDULED;
         } else if (request.getScheduleType() == com.notification.domain.enums.ScheduleType.RECURRING) {
-            initialStatus = NotificationStatus.SCHEDULED;
+            // Recurring notifications start as SENT because they're templates
+            // The recurring processor will create actual scheduled notifications from them
+            initialStatus = NotificationStatus.SENT;
         } else {
             initialStatus = NotificationStatus.PENDING;
         }

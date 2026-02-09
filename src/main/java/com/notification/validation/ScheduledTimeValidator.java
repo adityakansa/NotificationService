@@ -22,8 +22,10 @@ public class ScheduledTimeValidator {
                 throw new IllegalArgumentException("Scheduled time is required for SCHEDULED notifications");
             }
             
-            if (request.getScheduledTime().isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("Scheduled time must be in the future");
+            // Allow scheduled time within a 10-second grace period for testing
+            LocalDateTime now = LocalDateTime.now();
+            if (request.getScheduledTime().isBefore(now.minusSeconds(10))) {
+                throw new IllegalArgumentException("Scheduled time cannot be more than 10 seconds in the past");
             }
         }
     }
@@ -41,8 +43,10 @@ public class ScheduledTimeValidator {
                 throw new IllegalArgumentException("Initial scheduled time is required for RECURRING notifications");
             }
             
-            if (request.getScheduledTime().isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("Initial scheduled time must be in the future");
+            // Allow scheduled time within a 10-second grace period for MINUTELY frequency testing
+            LocalDateTime now = LocalDateTime.now();
+            if (request.getScheduledTime().isBefore(now.minusSeconds(10))) {
+                throw new IllegalArgumentException("Initial scheduled time cannot be more than 10 seconds in the past");
             }
             
             // Must have either end time or max occurrences

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ public class NotificationSchedulerService {
      * Runs every minute
      */
     @Scheduled(fixedDelay = 60000) // Run every 60 seconds
-    @Transactional
     public void processScheduledNotifications() {
         log.debug("Checking for scheduled notifications...");
         
@@ -74,10 +74,9 @@ public class NotificationSchedulerService {
     
     /**
      * Process recurring notifications
-     * Runs every hour
+     * Runs every minute to support MINUTELY frequency
      */
-    @Scheduled(fixedDelay = 3600000) // Run every hour
-    @Transactional
+    @Scheduled(fixedDelay = 60000) // Run every 60 seconds
     public void processRecurringNotifications() {
         log.debug("Checking for recurring notifications...");
         
@@ -90,24 +89,38 @@ public class NotificationSchedulerService {
             for (Notification original : recurringNotifications) {
                 try {
                     if (original.shouldContinueRecurrence()) {
-                        // Create a new notification instance for the next occurrence
-                        Notification nextOccurrence = createNextOccurrence(original);
+                        // Create a new notification instance for the CURRENT occurrence (scheduled now/past)
+                        Notification currentOccurrence = Notification.builder()
+                            .user(original.getUser())
+                            .subject(original.getSubject())
+                            .body(original.getBody())
+                            .template(original.getTemplate())
+                            .channel(original.getChannel())
+                            .priority(original.getPriority())
+                            .status(NotificationStatus.SCHEDULED)
+                            .scheduleType(ScheduleType.SCHEDULED)
+                            .scheduledTime(original.getScheduledTime())
+                            .metadata(original.getMetadata() != null ? new HashMap<>(original.getMetadata()) : new HashMap<>())
+                            .build();
+                        
+                        notificationRepository.save(currentOccurrence);
+                        
+                        // Calculate and update to the NEXT scheduled time
+                        LocalDateTime nextTime = calculateNextScheduledTime(original);
                         
                         // Validate the next occurrence time is not past recurrence end time
-                        if (original.getRecurrenceEndTime() != null && 
-                            nextOccurrence.getScheduledTime().isAfter(original.getRecurrenceEndTime())) {
+                        if (original.getRecurrenceEndTime() != null && nextTime.isAfter(original.getRecurrenceEndTime())) {
                             log.info("Recurring notification {} has reached its end time", original.getId());
                             continue;
                         }
                         
-                        notificationRepository.save(nextOccurrence);
-                        
-                        // Update occurrence count
+                        // Update occurrence count and scheduled time for next iteration
                         original.incrementOccurrence();
+                        original.setScheduledTime(nextTime);
                         notificationRepository.save(original);
                         
-                        log.info("Created next occurrence of recurring notification {} scheduled for {}", 
-                                 original.getId(), nextOccurrence.getScheduledTime());
+                        log.info("Created occurrence {} of recurring notification {} (scheduled: {}), next occurrence: {}", 
+                                 original.getOccurrenceCount(), original.getId(), currentOccurrence.getScheduledTime(), nextTime);
                     } else {
                         log.info("Recurring notification {} has reached its limit", original.getId());
                     }
@@ -193,33 +206,14 @@ public class NotificationSchedulerService {
     
     // Private helper methods
     
-    private Notification createNextOccurrence(Notification original) {
-        LocalDateTime nextTime;
-        
+    private LocalDateTime calculateNextScheduledTime(Notification original) {
         if (original.getRecurrenceFrequency() != null && original.getScheduledTime() != null) {
-            // Calculate next occurrence from the original scheduled time
+            // Calculate next occurrence from the current scheduled time
             long intervalMillis = original.getRecurrenceFrequency().getIntervalMillis();
-            nextTime = original.getScheduledTime().plusSeconds(intervalMillis / 1000);
+            return original.getScheduledTime().plusSeconds(intervalMillis / 1000);
         } else {
             // Fallback to now + interval
-            nextTime = LocalDateTime.now().plusHours(1);
+            return LocalDateTime.now().plusHours(1);
         }
-        
-        return Notification.builder()
-            .user(original.getUser())
-            .subject(original.getSubject())
-            .body(original.getBody())
-            .template(original.getTemplate())
-            .channel(original.getChannel())
-            .priority(original.getPriority())
-            .status(NotificationStatus.SCHEDULED)  // Set to SCHEDULED, not PENDING
-            .scheduleType(original.getScheduleType())
-            .scheduledTime(nextTime)
-            .recurrenceFrequency(original.getRecurrenceFrequency())
-            .recurrenceEndTime(original.getRecurrenceEndTime())
-            .maxOccurrences(original.getMaxOccurrences())
-            .occurrenceCount(0)  // New notification starts at 0
-            .metadata(original.getMetadata())
-            .build();
     }
 }

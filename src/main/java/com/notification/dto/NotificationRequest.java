@@ -45,7 +45,6 @@ public class NotificationRequest {
     @Builder.Default
     private ScheduleType scheduleType = ScheduleType.IMMEDIATE;
     
-    @Future(message = "Scheduled time must be in the future")
     private LocalDateTime scheduledTime;
     
     // Recurring notification fields

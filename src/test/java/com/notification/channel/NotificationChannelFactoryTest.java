@@ -73,7 +73,7 @@ class NotificationChannelFactoryTest {
             () -> factory.getStrategy(NotificationChannel.WHATSAPP)
         );
         
-        assertTrue(exception.getMessage().contains("No strategy found for channel"));
+        assertTrue(exception.getMessage().contains("channel strategy is not yet implemented"));
         assertTrue(exception.getMessage().contains("WHATSAPP"));
     }
 

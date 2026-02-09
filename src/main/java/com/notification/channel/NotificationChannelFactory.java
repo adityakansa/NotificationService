@@ -41,7 +41,8 @@ public class NotificationChannelFactory {
         
         if (strategy == null) {
             throw new IllegalArgumentException(
-                "No strategy found for channel: " + channel + ". Channel not yet implemented."
+                String.format("%s channel strategy is not yet implemented. " +
+                             "Available channels: EMAIL, SMS, PUSH", channel)
             );
         }
         

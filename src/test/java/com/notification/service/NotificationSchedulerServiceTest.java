@@ -593,12 +593,12 @@ class NotificationSchedulerServiceTest {
             .thenAnswer(invocation -> {
                 Notification saved = invocation.getArgument(0);
                 // Verify new occurrence has SCHEDULED status and correct scheduled time
-                if (saved.getId() == null) { // New notification
+                if (saved.getId() == null) { // New notification (occurrence)
                     assertEquals(NotificationStatus.SCHEDULED, saved.getStatus());
-                    assertEquals(com.notification.domain.enums.ScheduleType.RECURRING, saved.getScheduleType());
+                    assertEquals(com.notification.domain.enums.ScheduleType.SCHEDULED, saved.getScheduleType());
                     assertNotNull(saved.getScheduledTime());
-                    // Should be approximately 1 hour after original time
-                    assertTrue(saved.getScheduledTime().isAfter(originalTime));
+                    // The occurrence should be scheduled for the original time (not future)
+                    assertEquals(originalTime, saved.getScheduledTime());
                 }
                 return saved;
             });

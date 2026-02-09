@@ -11,7 +11,12 @@ class RecurrenceFrequencyTest {
 
     @Test
     void testAllFrequencies() {
-        assertEquals(4, RecurrenceFrequency.values().length);
+        assertEquals(5, RecurrenceFrequency.values().length);
+    }
+
+    @Test
+    void testMinutelyFrequency() {
+        assertEquals(60000L, RecurrenceFrequency.MINUTELY.getIntervalMillis());
     }
 
     @Test
@@ -36,6 +41,7 @@ class RecurrenceFrequencyTest {
 
     @Test
     void testValueOf() {
+        assertEquals(RecurrenceFrequency.MINUTELY, RecurrenceFrequency.valueOf("MINUTELY"));
         assertEquals(RecurrenceFrequency.HOURLY, RecurrenceFrequency.valueOf("HOURLY"));
         assertEquals(RecurrenceFrequency.DAILY, RecurrenceFrequency.valueOf("DAILY"));
         assertEquals(RecurrenceFrequency.WEEKLY, RecurrenceFrequency.valueOf("WEEKLY"));
@@ -45,6 +51,7 @@ class RecurrenceFrequencyTest {
     @Test
     void testIntervalMillisValues() {
         // Verify calculations
+        assertEquals(60 * 1000L, RecurrenceFrequency.MINUTELY.getIntervalMillis()); // 1 minute
         assertEquals(3600 * 1000L, RecurrenceFrequency.HOURLY.getIntervalMillis()); // 1 hour
         assertEquals(24 * 3600 * 1000L, RecurrenceFrequency.DAILY.getIntervalMillis()); // 24 hours
         assertEquals(7 * 24 * 3600 * 1000L, RecurrenceFrequency.WEEKLY.getIntervalMillis()); // 7 days
